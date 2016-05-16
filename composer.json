@@ -1,0 +1,39 @@
+{
+    "name": "carawebs/plugin-boilerplate",
+    "description": "WordPress plugin boilerplate.",
+    "keywords": [
+        "wordpress"
+    ],
+    "type": "wordpress-plugin",
+    "authors": [
+        {
+            "name": "David Egan",
+            "email": "david@carawebs.com",
+            "homepage": "http://davidegan.me",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/Carawebs/plugin-boilerplate/issues",
+        "source": "https://github.com/Carawebs/plugin-boilerplate"
+    },
+    "license": "MIT",
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "PluginBoilerplate\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "optimize-autoloader": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.3.x-dev"
+        }
+    }
+}

@@ -1,18 +1,18 @@
 <?php
 /*
 Plugin Name: PluginBoilerplate
-Plugin URI: http://github.com/Giuseppe-Mazzapica/PluginBoilerplate
+Plugin URI: http://bitbucket.org/carawebs/plugin-boilerplate
 Description: Add a button on Editor toolbar that when clicked render all shortcodes to actual HTML.
 Version: 0.1
-Author: Giuseppe Mazzapica
-Author URI: http://gm.zoomlab.it
+Author: David Egan
+Author URI: http://davidegan.me
 License: MIT
 */
 
 /*
 The MIT License (MIT)
 
-Copyright (c) 2015 Giuseppe Mazzapica
+Copyright (c) 2015 David Egan
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

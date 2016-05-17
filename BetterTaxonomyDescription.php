@@ -2,7 +2,7 @@
 /*
 Plugin Name: Better Taxonomy Description
 Plugin URI: http://bitbucket.org/carawebs/better-taxonomy-description
-Description: Add a button on Editor toolbar that when clicked render all shortcodes to actual HTML.
+Description: Replace textarea description field with WYSIWYG on select taxonomies
 Version: 0.1
 Author: David Egan
 Author URI: http://davidegan.me
@@ -34,9 +34,7 @@ SOFTWARE.
 */
 namespace BetterTaxonomyDescription;
 
-if (! is_admin()) {
-    return;
-}
+if ( ! is_admin() ) { return; }
 
 $autoload = __DIR__ . '/vendor/autoload.php';
 
@@ -48,7 +46,7 @@ if (file_exists($autoload)) {
 
 add_action( 'plugins_loaded', function () {
 
-    load_plugin_textdomain( 'plugin_boilerplate', false, dirname( plugin_basename(__FILE__) ).'/lang' );
+    load_plugin_textdomain( 'better_taxonomy_description', false, dirname( plugin_basename(__FILE__) ) . '/lang' );
 
 });
 
@@ -59,13 +57,20 @@ function setup_wysiwyg( $taxonomies ) {
   class_exists( 'BetterTaxonomyDescription\TaxonomyDescription' ) or require_once __DIR__ . '/src/TaxonomyDescription.php';
   class_exists( 'BetterTaxonomyDescription\RemoveOldField' ) or require_once __DIR__ . '/src/RemoveOldField.php';
 
+  $description = new TaxonomyDescription();
+
   foreach( $taxonomies as $taxonomy ) {
 
-    add_action( $taxonomy . '_edit_form_fields', [ new TaxonomyDescription(), 'description' ] );
+    add_action( $taxonomy . '_edit_form_fields', [ $description, 'description' ] );
+    //$description->remove_html_filtering( $taxonomy );
 
   }
 
-  TaxonomyDescription::remove_html_filtering();
+  //$description->remove_html_filtering( $taxonomy );
+
+  //TaxonomyDescription::remove_html_filtering();
+  remove_filter( 'pre_term_description', 'wp_filter_kses' );
+  remove_filter( 'term_description', 'wp_kses_data' );
 
   add_action('admin_head', [ new RemoveOldField( $taxonomies ), 'remove_default_category_description' ] );
 

@@ -15,47 +15,45 @@ class TaxonomyDescription {
    * @see http://wordpress.stackexchange.com/questions/689/adding-fields-to-the-category-tag-and-custom-taxonomy-edit-screen-in-the-wordpr
    * @see https://paulund.co.uk/add-tinymce-editor-category-description
    */
-  public function description( $tag ) {
+   public function description( $tag ) {
 
-    ?>
-    <!-- <table class="form-table"> -->
-      <tr class="form-field">
-        <th scope="row" valign="top"><label for="description"><?php _ex( 'Description', 'Taxonomy Description', 'plugin_boilerplate' ); ?></label></th>
-        <td>
-          <?php
+     ?>
+     <tr class="form-field">
+       <th scope="row" valign="top"><label for="description"><?php _ex( 'Description', 'Taxonomy Description', 'plugin_boilerplate' ); ?></label></th>
+       <td>
+         <?php
 
-          $settings = [
-            'wpautop'       => FALSE,
-            'media_buttons' => true,
-            'quicktags'     => true,
-            'textarea_rows' => '15',
-            'textarea_name' => 'description'
-          ];
+         $settings = [
+           'wpautop'       => FALSE,
+           'media_buttons' => true,
+           'quicktags'     => true,
+           'textarea_rows' => '15',
+           'textarea_name' => 'description'
+         ];
 
-          // wp_editor( wpautop( stripslashes($content) ), $editor_id, $args );
+         // wp_editor( wpautop( stripslashes($content) ), $editor_id, $args );
 
-          wp_editor(
-            html_entity_decode( $tag->description ),
-            //$tag->description,
-            'cat_description',
-            $settings
-          );
+         wp_editor(
+         html_entity_decode( $tag->description ),
+         //$tag->description,
+         'cat_description',
+         $settings
+       );
 
-          ?>
-          <br />
-          <span class="description"><?php _e('The description is not prominent by default; however, some themes may show it.'); ?></span>
-        </td>
-      </tr>
-    <!-- </table> -->
-    <?php
+       ?>
+       <br />
+       <span class="description"><?php _e('The description is not prominent by default; however, some themes may show it.'); ?></span>
+     </td>
+   </tr>
+   <?php
 
   }
 
-  public static function remove_html_filtering() {
+  public function remove_html_filtering( $taxonomy ) {
 
     // remove the html filtering
-    remove_filter( 'pre_term_description', 'wp_filter_kses' );
-    remove_filter( 'term_description', 'wp_kses_data' );
+    remove_filter( 'pre_' . $taxonomy . '_description', 'wp_filter_kses' );
+    remove_filter( $taxonomy . '_description', 'wp_kses_data' );
 
   }
 

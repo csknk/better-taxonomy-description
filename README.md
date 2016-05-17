@@ -6,10 +6,11 @@ The default textarea description field is replaced with a wysiwyg field. TinyMCE
 
 ---
 
-
 ## License
 
 BetterTaxonomyDescription is licensed under [MIT](http://opensource.org/licenses/MIT).
+
+---
 
 ## Setup
 

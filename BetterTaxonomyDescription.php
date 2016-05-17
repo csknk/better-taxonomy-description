@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: BetterTaxonomyDescription
+Plugin Name: Better Taxonomy Description
 Plugin URI: http://bitbucket.org/carawebs/better-taxonomy-description
 Description: Add a button on Editor toolbar that when clicked render all shortcodes to actual HTML.
 Version: 0.1
@@ -38,7 +38,7 @@ if (! is_admin()) {
     return;
 }
 
-$autoload = __DIR__.'/vendor/autoload.php';
+$autoload = __DIR__ . '/vendor/autoload.php';
 
 if (file_exists($autoload)) {
 
@@ -72,27 +72,3 @@ function setup_wysiwyg( $taxonomies ) {
 }
 
 setup_wysiwyg( $taxonomies );
-
-// if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-//
-//     class_exists( 'BetterTaxonomyDescription\FormData' ) or require_once __DIR__ . '/src/FormData.php';
-//
-//     add_action( 'wp_ajax_plugin_boilerplate-render', [ new Renderer( new FormData() ), 'render'] );
-//
-// } elseif ( in_array($GLOBALS['pagenow'], ['post.php', 'post-new.php'], true) ) {
-//
-//     class_exists( 'BetterTaxonomyDescription\AdminForm' ) or require_once __DIR__ . '/src/AdminForm.php';
-//     class_exists( 'BetterTaxonomyDescription\FormData' ) or require_once __DIR__ . '/src/FormData.php';
-//     class_exists( 'BetterTaxonomyDescription\PostProvider' ) or require_once __DIR__ . '/src/PostProvider.php';
-//
-//     add_action( 'admin_init', [ new AdminForm( new FormData( ( new PostProvider() )->init() ) ), 'setup'] );
-//
-// }
-// add_action( 'admin_notices', __NAMESPACE__. '\\dev_check_current_screen' );
-// function dev_check_current_screen() {
-// 	if( !is_admin() ) return;
-//
-// 	global $current_screen;
-//
-// 	print_r($current_screen);
-// }

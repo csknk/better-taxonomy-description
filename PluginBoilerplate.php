@@ -57,6 +57,7 @@ $taxonomies = ['product-application', 'product-category' ];
 function setup_wysiwyg( $taxonomies ) {
 
   class_exists( 'PluginBoilerplate\TaxonomyDescription' ) or require_once __DIR__ . '/src/TaxonomyDescription.php';
+  class_exists( 'PluginBoilerplate\RemoveOldField' ) or require_once __DIR__ . '/src/RemoveOldField.php';
 
   foreach( $taxonomies as $taxonomy ) {
 
@@ -65,6 +66,8 @@ function setup_wysiwyg( $taxonomies ) {
   }
 
   TaxonomyDescription::remove_html_filtering();
+
+  add_action('admin_head', [ new RemoveOldField( $taxonomies ), 'remove_default_category_description' ] );
 
 }
 
@@ -84,4 +87,12 @@ setup_wysiwyg( $taxonomies );
 //
 //     add_action( 'admin_init', [ new AdminForm( new FormData( ( new PostProvider() )->init() ) ), 'setup'] );
 //
+// }
+// add_action( 'admin_notices', __NAMESPACE__. '\\dev_check_current_screen' );
+// function dev_check_current_screen() {
+// 	if( !is_admin() ) return;
+//
+// 	global $current_screen;
+//
+// 	print_r($current_screen);
 // }

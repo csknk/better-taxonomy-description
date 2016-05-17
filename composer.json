@@ -1,6 +1,6 @@
 {
-    "name": "carawebs/plugin-boilerplate",
-    "description": "WordPress plugin boilerplate.",
+    "name": "carawebs/better-taxonomy-description",
+    "description": "WordPress plugin for better taxonomy description.",
     "keywords": [
         "wordpress"
     ],
@@ -14,8 +14,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/Carawebs/plugin-boilerplate/issues",
-        "source": "https://github.com/Carawebs/plugin-boilerplate"
+        "issues": "https://github.com/Carawebs/better-taxonomy-description/issues",
+        "source": "https://github.com/Carawebs/better-taxonomy-description"
     },
     "license": "MIT",
     "require": {
@@ -23,7 +23,7 @@
     },
     "autoload": {
         "psr-4": {
-            "PluginBoilerplate\\": "src/"
+            "BetterTaxonomyDescription\\": "src/"
         }
     },
     "minimum-stability": "dev",
@@ -33,7 +33,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.3.x-dev"
+            "dev-master": "0.0.1-dev"
         }
     }
 }

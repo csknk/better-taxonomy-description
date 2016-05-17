@@ -8,4 +8,4 @@
     "use strict";
 
 
-})( jQuery, tinymce, PluginBoilerplate, ajaxurl, document );
+})( jQuery, tinymce, BetterTaxonomyDescription, ajaxurl, document );

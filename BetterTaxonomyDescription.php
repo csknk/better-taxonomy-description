@@ -1,7 +1,7 @@
 <?php
 /*
-Plugin Name: PluginBoilerplate
-Plugin URI: http://bitbucket.org/carawebs/plugin-boilerplate
+Plugin Name: BetterTaxonomyDescription
+Plugin URI: http://bitbucket.org/carawebs/better-taxonomy-description
 Description: Add a button on Editor toolbar that when clicked render all shortcodes to actual HTML.
 Version: 0.1
 Author: David Egan
@@ -32,7 +32,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-namespace PluginBoilerplate;
+namespace BetterTaxonomyDescription;
 
 if (! is_admin()) {
     return;
@@ -56,8 +56,8 @@ $taxonomies = ['product-application', 'product-category' ];
 
 function setup_wysiwyg( $taxonomies ) {
 
-  class_exists( 'PluginBoilerplate\TaxonomyDescription' ) or require_once __DIR__ . '/src/TaxonomyDescription.php';
-  class_exists( 'PluginBoilerplate\RemoveOldField' ) or require_once __DIR__ . '/src/RemoveOldField.php';
+  class_exists( 'BetterTaxonomyDescription\TaxonomyDescription' ) or require_once __DIR__ . '/src/TaxonomyDescription.php';
+  class_exists( 'BetterTaxonomyDescription\RemoveOldField' ) or require_once __DIR__ . '/src/RemoveOldField.php';
 
   foreach( $taxonomies as $taxonomy ) {
 
@@ -75,15 +75,15 @@ setup_wysiwyg( $taxonomies );
 
 // if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 //
-//     class_exists( 'PluginBoilerplate\FormData' ) or require_once __DIR__ . '/src/FormData.php';
+//     class_exists( 'BetterTaxonomyDescription\FormData' ) or require_once __DIR__ . '/src/FormData.php';
 //
 //     add_action( 'wp_ajax_plugin_boilerplate-render', [ new Renderer( new FormData() ), 'render'] );
 //
 // } elseif ( in_array($GLOBALS['pagenow'], ['post.php', 'post-new.php'], true) ) {
 //
-//     class_exists( 'PluginBoilerplate\AdminForm' ) or require_once __DIR__ . '/src/AdminForm.php';
-//     class_exists( 'PluginBoilerplate\FormData' ) or require_once __DIR__ . '/src/FormData.php';
-//     class_exists( 'PluginBoilerplate\PostProvider' ) or require_once __DIR__ . '/src/PostProvider.php';
+//     class_exists( 'BetterTaxonomyDescription\AdminForm' ) or require_once __DIR__ . '/src/AdminForm.php';
+//     class_exists( 'BetterTaxonomyDescription\FormData' ) or require_once __DIR__ . '/src/FormData.php';
+//     class_exists( 'BetterTaxonomyDescription\PostProvider' ) or require_once __DIR__ . '/src/PostProvider.php';
 //
 //     add_action( 'admin_init', [ new AdminForm( new FormData( ( new PostProvider() )->init() ) ), 'setup'] );
 //

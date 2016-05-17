@@ -3,22 +3,22 @@
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @license http://opensource.org/licenses/MIT MIT
  */
-namespace PluginBoilerplate;
+namespace BetterTaxonomyDescription;
 
 /**
  * Adds plugin scripts and scripts data.
  *
- * @package PluginBoilerplate
+ * @package BetterTaxonomyDescription
  */
 class AdminForm
 {
     /**
-     * @var \PluginBoilerplate\FormData
+     * @var \BetterTaxonomyDescription\FormData
      */
     private $formData;
 
     /**
-     * @param \PluginBoilerplate\FormData $formData
+     * @param \BetterTaxonomyDescription\FormData $formData
      */
     public function __construct(FormData $formData)
     {
@@ -26,7 +26,7 @@ class AdminForm
     }
 
     /**
-     * Adds PluginBoilerplate button to TinyMCE toolbar and connect it with javascript file.
+     * Adds BetterTaxonomyDescription button to TinyMCE toolbar and connect it with javascript file.
      * Runs on 'admin_init' hook (se in main plugin file).
      */
     public function setup()
@@ -40,7 +40,7 @@ class AdminForm
             ";
         });
         add_action('admin_enqueue_scripts', function () {
-            wp_localize_script('editor', 'PluginBoilerplate', $this->formData->data());
+            wp_localize_script('editor', 'BetterTaxonomyDescription', $this->formData->data());
         });
         add_filter('mce_buttons', function (array $buttons) {
             return array_merge($buttons, ['plugin_boilerplateRender']);
@@ -54,6 +54,6 @@ class AdminForm
     {
         $name = defined('WP_DEBUG') && WP_DEBUG ? "/js/plugin_boilerplate.js" : "/js/plugin_boilerplate.min.js";
 
-        return plugins_url($name, dirname(__DIR__).'/PluginBoilerplate.php');
+        return plugins_url($name, dirname(__DIR__).'/BetterTaxonomyDescription.php');
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace PluginBoilerplate;
+namespace BetterTaxonomyDescription;
 
 class TaxonomyDescription {
 

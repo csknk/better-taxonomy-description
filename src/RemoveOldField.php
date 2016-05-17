@@ -3,7 +3,7 @@
  * @author  David Egan <david@carawebs.com>
  * @license http://opensource.org/licenses/MIT MIT
  */
-namespace PluginBoilerplate;
+namespace BetterTaxonomyDescription;
 
 /**
  * Remove the existing description textarea on specific custom taxon

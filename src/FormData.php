@@ -3,7 +3,7 @@
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @license http://opensource.org/licenses/MIT MIT
  */
-namespace BetterTaxonomyDescription;
+namespace Carawebs\BetterTaxonomy;
 
 use WP_Post;
 
@@ -11,7 +11,7 @@ use WP_Post;
  * Used by Renderer and AdminForm classes to, respectively, retrieve and set data for post
  * rendering.
  *
- * @package BetterTaxonomyDescription
+ * @package BetterTaxonomy
  */
 class FormData
 {
@@ -21,12 +21,12 @@ class FormData
     private static $nonce = 'plugin_boilerplate_render';
 
     /**
-     * @var \BetterTaxonomyDescription\PostProvider
+     * @var \BetterTaxonomy\PostProvider
      */
     private $postProvider;
 
     /**
-     * @param \BetterTaxonomyDescription\PostProvider $postProvider
+     * @param \BetterTaxonomy\PostProvider $postProvider
      */
     public function __construct(PostProvider $postProvider = null)
     {

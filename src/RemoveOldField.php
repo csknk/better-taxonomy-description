@@ -3,7 +3,7 @@
  * @author  David Egan <david@carawebs.com>
  * @license http://opensource.org/licenses/MIT MIT
  */
-namespace BetterTaxonomyDescription;
+namespace Carawebs\BetterTaxonomy;
 
 /**
  * Remove the existing description textarea on specific custom taxon

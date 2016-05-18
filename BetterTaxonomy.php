@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Better Taxonomy Description
+Plugin Name: Better Taxonomy
 Plugin URI: http://bitbucket.org/carawebs/better-taxonomy-description
 Description: Replace textarea description field with WYSIWYG on select taxonomies
 Version: 0.1
@@ -32,13 +32,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-namespace BetterTaxonomyDescription;
+namespace Carawebs\BetterTaxonomy;
 
 if ( ! is_admin() ) { return; }
 
 $autoload = __DIR__ . '/vendor/autoload.php';
 
-if (file_exists($autoload)) {
+if ( file_exists( $autoload ) ) {
 
     require_once $autoload;
 
@@ -54,23 +54,17 @@ $taxonomies = ['product-application', 'product-category' ];
 
 function setup_wysiwyg( $taxonomies ) {
 
-  class_exists( 'BetterTaxonomyDescription\TaxonomyDescription' ) or require_once __DIR__ . '/src/TaxonomyDescription.php';
-  class_exists( 'BetterTaxonomyDescription\RemoveOldField' ) or require_once __DIR__ . '/src/RemoveOldField.php';
+  class_exists( 'Carawebs\BetterTaxonomy\TaxonomyDescription' ) or require_once __DIR__ . '/src/Views/TaxonomyDescription.php';
+  class_exists( 'Carawebs\BetterTaxonomy\RemoveOldField' ) or require_once __DIR__ . '/src/RemoveOldField.php';
 
-  $description = new TaxonomyDescription();
+  $description = new Views\TaxonomyDescription();
 
   foreach( $taxonomies as $taxonomy ) {
 
     add_action( $taxonomy . '_edit_form_fields', [ $description, 'description' ] );
-    //$description->remove_html_filtering( $taxonomy );
+    $description->remove_html_filtering();
 
   }
-
-  //$description->remove_html_filtering( $taxonomy );
-
-  //TaxonomyDescription::remove_html_filtering();
-  remove_filter( 'pre_term_description', 'wp_filter_kses' );
-  remove_filter( 'term_description', 'wp_kses_data' );
 
   add_action('admin_head', [ new RemoveOldField( $taxonomies ), 'remove_default_category_description' ] );
 

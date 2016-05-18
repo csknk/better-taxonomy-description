@@ -1,5 +1,5 @@
 <?php
-namespace BetterTaxonomyDescription;
+namespace Carawebs\BetterTaxonomy;
 
 /**
  * Class that loads actions and filters

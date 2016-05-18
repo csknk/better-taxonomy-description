@@ -8,4 +8,4 @@
     "use strict";
 
 
-})( jQuery, tinymce, BetterTaxonomyDescription, ajaxurl, document );
+})( jQuery, tinymce, BetterTaxonomy, ajaxurl, document );

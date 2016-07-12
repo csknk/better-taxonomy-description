@@ -4,12 +4,19 @@ namespace Carawebs\BetterTaxonomy;
 
 
 // add_action( 'admin_menu', 'cw_add_admin_menu' );
-// add_action( 'admin_init', 'carawebs_tax_desc_init' );
+// add_action( 'admin_carawebs_better_tax', 'carawebs_better_tax_init' );
 
 /**
  * Class for plugin settings
  */
 class Settings {
+
+  public function __construct( Config $config = NULL ) {
+
+    $this->taxonomies = $config['taxonomy'];
+    $this->option = CARAWEBS_BETTER_TAX_OPTION;
+
+  }
 
   function cw_add_admin_menu() {
 
@@ -24,11 +31,11 @@ class Settings {
   }
 
 
-  function carawebs_tax_desc_init() {
+  function carawebs_better_tax_init() {
 
     register_setting(
     'cw_better_tax',
-    'carawebs_tax_desc',
+    $this->option,//'carawebs_better_tax',
     [ $this, 'sanitize' ]
   );
 
@@ -43,8 +50,8 @@ class Settings {
       'taxonomy',                                               // ID
       __( 'Select Taxonomy', 'better-taxonomy-description' ),   // Field Title
       [ $this, 'render_taxonomy_selector' ],                    // Render callback
-      'cw_better_tax',                                             // Page
-      'cw_cw_better_tax_section'                                   // Section
+      'cw_better_tax',                                          // Page
+      'cw_cw_better_tax_section'                                // Section
     );
 
   }
@@ -52,9 +59,9 @@ class Settings {
 
   function taxonomy_selector() {
 
-    $options = get_option( 'carawebs_tax_desc' );
+    $options = get_option( 'carawebs_better_tax' );
     ?>
-    <input type='checkbox' name='carawebs_tax_desc[cw_checkbox_field_0]' <?php checked( $options['cw_checkbox_field_0'], 1 ); ?> value='1'>
+    <input type='checkbox' name='carawebs_better_tax[cw_checkbox_field_0]' <?php checked( $options['cw_checkbox_field_0'], 1 ); ?> value='1'>
     <?php
 
   }
@@ -76,15 +83,15 @@ class Settings {
       if( in_array( $taxonomy->name, $disallowed ) ) continue;
 
       $checked = NULL;
-      $existing = ! empty( get_option('carawebs_tax_desc')['taxonomy'] ) ? get_option('carawebs_tax_desc')['taxonomy'] : NULL;
+      $existing = ! empty( $this->taxonomies ) ? $this->taxonomies : NULL;
       if ( isset( $existing ) && is_array( $existing ) ) {
 
         $checked = in_array( $taxonomy->name, $existing ) ? "checked='checked'" : NULL;
 
       }
 
-    echo "<input type='hidden' name='carawebs_tax_desc[taxonomy][]' value='0'>";
-    echo "<label><input type='checkbox' name='carawebs_tax_desc[taxonomy][]' value='{$taxonomy->name}'$checked>&nbsp;$taxonomy->label</label><br>";
+    echo "<input type='hidden' name='{$this->option}[taxonomy][]' value='0'>";
+    echo "<label><input type='checkbox' name='{$this->option}[taxonomy][]' value='{$taxonomy->name}'$checked>&nbsp;$taxonomy->label</label><br>";
 
     }
 
@@ -111,7 +118,6 @@ class Settings {
       <?php
       settings_fields( 'cw_better_tax' );
       do_settings_sections( 'cw_better_tax' );
-      var_dump($_POST);
       submit_button();
       ?>
 

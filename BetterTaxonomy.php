@@ -29,14 +29,74 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 namespace Carawebs\BetterTaxonomy;
+error_log("AAA");
+//if ( ! is_admin() ) { return; }
 
-if ( ! is_admin() ) { return; }
+/**
+ * Define constants for this plugin
+ */
+define( 'CARAWEBS_BETTER_TAX_PATH', plugin_dir_path( __FILE__ ) );
+define( 'CARAWEBS_BETTER_TAX_BASE_URL', plugins_url( NULL, __FILE__ ) );
+define( 'CARAWEBS_BETTER_TAX_SLUG', 'carawebs_better_tax' );
+define( 'CARAWEBS_BETTER_TAX_OPTION', 'carawebs_better_tax' );
 
-$autoload = __DIR__ . '/vendor/autoload.php';
+/**
+ * Load Composer autoload if available, otherwise register a simple autoload callback.
+ *
+ * @return void
+ */
+function autoload() {
 
-if ( file_exists( $autoload ) ) {
+  static $done;
 
-    require_once $autoload;
+  // Go ahead if $done == NULL or the class doesn't exist
+  if ( ! $done && ! class_exists( 'Carawebs\OrganisePosts\Plugin', true ) ) {
+
+    $done = true;
+
+    file_exists( __DIR__.'/vendor/autoload.php' )
+        ? require_once __DIR__.'/vendor/autoload.php'
+        : spl_autoload_register( function ( $class ) {
+
+            if (strpos($class, __NAMESPACE__) === 0) {
+
+                $name = str_replace('\\', '/', substr($class, strlen(__NAMESPACE__)));
+
+                require_once __DIR__."/src{$name}.php";
+
+            }
+
+        });
+
+  }
+
+}
+
+function setup() {
+
+  $config = new Config();
+  $settings_page = new Settings( $config );
+
+  add_action( 'admin_menu', [ $settings_page, 'cw_add_admin_menu' ] );
+  add_action( 'admin_init', [ $settings_page, 'carawebs_better_tax_init' ] );
+
+  $description = new Views\TaxonomyDescription();
+
+  // Loop through the set taxonomies and connect up the hooks
+  $taxonomies = $config['taxonomy'];
+  foreach( $taxonomies as $taxonomy ) {
+
+    add_action( $taxonomy . '_edit_form_fields', [ $description, 'description' ] );
+
+  }
+
+  //http://stackoverflow.com/questions/6285812/wordpress-apply-remove-filter-only-on-one-page
+  // @TODO: http://stackoverflow.com/a/36608926
+
+  $amend_fields = new RemoveOldField( $taxonomies );
+  add_action( 'admin_head', [ $amend_fields, 'remove_default_category_description' ] );
+  add_action( 'admin_init', [ $amend_fields, 'remove_html_filtering' ] );
+  add_action( 'wp_head', [ $amend_fields, 'replace_html_filtering_for_output' ] );
 
 }
 
@@ -46,36 +106,5 @@ add_action( 'plugins_loaded', function () {
 
 });
 
-function setup() {
-
-  require_once __DIR__ . '/src/Settings.php';
-
-  $settings_page = new Settings();
-
-  add_action( 'admin_menu', [ $settings_page, 'cw_add_admin_menu' ] );
-  add_action( 'admin_init', [ $settings_page, 'carawebs_tax_desc_init' ] );
-
-}
-
-$taxonomies = ['product-application', 'product-category' ];
-
-function setup_wysiwyg( $taxonomies ) {
-
-  class_exists( 'Carawebs\BetterTaxonomy\Views\TaxonomyDescription' ) or require_once __DIR__ . '/src/Views/TaxonomyDescription.php';
-  class_exists( 'Carawebs\BetterTaxonomy\Views\RemoveOldField' ) or require_once __DIR__ . '/src/RemoveOldField.php';
-
-  $description = new Views\TaxonomyDescription();
-
-  foreach( $taxonomies as $taxonomy ) {
-
-    add_action( $taxonomy . '_edit_form_fields', [ $description, 'description' ] );
-    $description->remove_html_filtering();
-
-  }
-
-  add_action('admin_head', [ new RemoveOldField( $taxonomies ), 'remove_default_category_description' ] );
-
-}
-
+autoload();
 setup();
-setup_wysiwyg( $taxonomies );

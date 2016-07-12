@@ -4,7 +4,7 @@ namespace Carawebs\BetterTaxonomy;
 
 class Config implements \ArrayAccess {
 
-    const OPTION = 'carawebs_organiser';
+    const OPTION = CARAWEBS_BETTER_TAX_OPTION;
     const CAP    = 'manage_options';
 
     /**

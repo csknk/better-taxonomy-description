@@ -1,12 +1,12 @@
 <?php
 /**
  * @author  David Egan <david@carawebs.com>
- * @license http://opensource.org/licenses/MIT MIT
+ * @license https://opensource.org/licenses/gpl-2.0.php
  */
 namespace Carawebs\BetterTaxonomy;
 
 /**
- * Remove the existing description textarea on specific custom taxon
+ * Remove the existing description textarea on specific custom taxonomies
  */
 class RemoveOldField {
 
@@ -20,6 +20,8 @@ class RemoveOldField {
    * @param array $taxonomies Array of taxonomy slugs for taxonomies that should have the default description removed
    */
   public function __construct( $taxonomies ) {
+
+    $this->taxonomies = $taxonomies;
 
     $this->set_taxonomy_screens( $taxonomies );
 
@@ -58,6 +60,60 @@ class RemoveOldField {
         });
         </script>
     <?php
+
+  }
+
+  /**
+   * Removes filtering of term meta description in the admin area
+   *
+   * @return void
+   */
+  public function remove_html_filtering() {
+
+    // global $current_screen;
+    // if ( ! in_array( $current_screen->id, $this->taxonomy_screens ) ) { return; }
+
+    remove_filter( 'pre_term_description', 'wp_filter_kses' );
+    remove_filter( 'term_description', 'wp_kses_data' );
+
+  }
+
+  /**
+   * Replace HTML filtering for output
+   *
+   * Reinstates the normal filters for term description on taxonomies that are not activated
+   *
+   * @return [type] [description]
+   */
+  public function replace_html_filtering_for_output() {
+
+    $all_taxonomies = array_values( get_taxonomies() );
+
+    // Filtered taxonomies need to have the normal filters reinstated for term description
+    $filtered_taxonomies = array_diff( $all_taxonomies, $this->taxonomies );
+
+    foreach( $filtered_taxonomies as $taxonomy ) {
+
+      if( is_tax( $taxonomy ) ) {
+
+        add_filter( 'pre_term_description', 'wp_filter_kses' );
+        add_filter( 'term_description', 'wp_kses_data' );
+
+      } elseif( 'post_tag' === $taxonomy && is_tag() ) {
+
+        // The `is_tax()` conditional does not pick up 'post_tag'
+        add_filter( 'pre_term_description', 'wp_filter_kses' );
+        add_filter( 'term_description', 'wp_kses_data' );
+
+      } elseif ( 'category' === $taxonomy && is_category() ) {
+
+        // The `is_tax()` conditional does not pick up 'category'
+        add_filter( 'pre_term_description', 'wp_filter_kses' );
+        add_filter( 'term_description', 'wp_kses_data' );
+
+      }
+
+    }
 
   }
 

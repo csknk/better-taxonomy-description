@@ -48,11 +48,11 @@ class TaxonomyDescription {
 
   }
 
-  public function remove_html_filtering() {
-
-    remove_filter( 'pre_term_description', 'wp_filter_kses' );
-    remove_filter( 'term_description', 'wp_kses_data' );
-
-  }
+  // public function remove_html_filtering() {
+  //
+  //   remove_filter( 'pre_term_description', 'wp_filter_kses' );
+  //   remove_filter( 'term_description', 'wp_kses_data' );
+  //
+  // }
 
 }

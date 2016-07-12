@@ -17,3 +17,7 @@ BetterTaxonomy is licensed under [MIT](http://opensource.org/licenses/MIT).
 1. Clone this repo into `/wp-content/plugins`
 2. Activate plugin
 3. Set the target Taxonomies in `/BetterTaxonomy.php`
+
+## Prior Art
+The idea for this plugin comes from:
+https://paulund.co.uk/add-tinymce-editor-category-description

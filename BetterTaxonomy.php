@@ -6,31 +6,27 @@ Description: Replace textarea description field with WYSIWYG on select taxonomie
 Version: 0.1
 Author: David Egan
 Author URI: http://davidegan.me
-License: MIT
+License: GPL2
 */
 
 /*
-The MIT License (MIT)
+GNU GENERAL PUBLIC LICENSE
 
 Copyright (c) 2015 David Egan
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 namespace Carawebs\BetterTaxonomy;
 
@@ -50,12 +46,23 @@ add_action( 'plugins_loaded', function () {
 
 });
 
+function setup() {
+
+  require_once __DIR__ . '/src/Settings.php';
+
+  $settings_page = new Settings();
+
+  add_action( 'admin_menu', [ $settings_page, 'cw_add_admin_menu' ] );
+  add_action( 'admin_init', [ $settings_page, 'carawebs_tax_desc_init' ] );
+
+}
+
 $taxonomies = ['product-application', 'product-category' ];
 
 function setup_wysiwyg( $taxonomies ) {
 
-  class_exists( 'Carawebs\BetterTaxonomy\TaxonomyDescription' ) or require_once __DIR__ . '/src/Views/TaxonomyDescription.php';
-  class_exists( 'Carawebs\BetterTaxonomy\RemoveOldField' ) or require_once __DIR__ . '/src/RemoveOldField.php';
+  class_exists( 'Carawebs\BetterTaxonomy\Views\TaxonomyDescription' ) or require_once __DIR__ . '/src/Views/TaxonomyDescription.php';
+  class_exists( 'Carawebs\BetterTaxonomy\Views\RemoveOldField' ) or require_once __DIR__ . '/src/RemoveOldField.php';
 
   $description = new Views\TaxonomyDescription();
 
@@ -70,4 +77,5 @@ function setup_wysiwyg( $taxonomies ) {
 
 }
 
+setup();
 setup_wysiwyg( $taxonomies );

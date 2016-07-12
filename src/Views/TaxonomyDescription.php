@@ -35,7 +35,6 @@ class TaxonomyDescription {
 
          wp_editor(
          html_entity_decode( $tag->description ),
-         //$tag->description,
          'cat_description',
          $settings
        );
@@ -50,10 +49,6 @@ class TaxonomyDescription {
   }
 
   public function remove_html_filtering() {
-
-    // remove the html filtering
-    // remove_filter( 'pre_' . $taxonomy . '_description', 'wp_filter_kses' );
-    // remove_filter( $taxonomy . '_description', 'wp_kses_data' );
 
     remove_filter( 'pre_term_description', 'wp_filter_kses' );
     remove_filter( 'term_description', 'wp_kses_data' );

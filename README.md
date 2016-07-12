@@ -1,14 +1,14 @@
 # BetterTaxonomy
 
-> Get rid of the crappy textarea description for WordPress Taxonomy descriptions.
+This plugin replaces the default descripion field (a textarea field) with a Tiny MCE wysiwyg field.
 
-The default textarea description field is replaced with a wysiwyg field. TinyMCE is called using `wp_editor()`.
+> Get rid of the textarea description for selected WordPress Taxonomy descriptions, and replace it with a WYSIWYG field.
 
 ---
 
 ## License
 
-BetterTaxonomy is licensed under [MIT](http://opensource.org/licenses/MIT).
+BetterTaxonomy is licensed under [GPL2](https://opensource.org/licenses/gpl-2.0.php).
 
 ---
 
@@ -16,7 +16,7 @@ BetterTaxonomy is licensed under [MIT](http://opensource.org/licenses/MIT).
 
 1. Clone this repo into `/wp-content/plugins`
 2. Activate plugin
-3. Set the target Taxonomies in `/BetterTaxonomy.php`
+3. Set the target Taxonomies in "Dashboard" >> "Settings" >> "Taxonomy Description"
 
 ## Prior Art
 The idea for this plugin comes from:

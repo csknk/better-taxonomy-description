@@ -99,7 +99,7 @@ function setup() {
   $amend_fields = new RemoveOldField( $taxonomies );
   add_action( 'admin_head', [ $amend_fields, 'remove_default_category_description' ] );
   add_action( 'admin_init', [ $amend_fields, 'remove_html_filtering' ] );
-  add_action( 'wp_head', [ $amend_fields, 'replace_html_filtering_for_output' ] );
+  //add_action( 'wp_head', [ $amend_fields, 'replace_html_filtering_for_output' ] );
 
 }
 

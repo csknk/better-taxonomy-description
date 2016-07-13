@@ -70,9 +70,6 @@ class RemoveOldField {
    */
   public function remove_html_filtering() {
 
-    // global $current_screen;
-    // if ( ! in_array( $current_screen->id, $this->taxonomy_screens ) ) { return; }
-
     remove_filter( 'pre_term_description', 'wp_filter_kses' );
     remove_filter( 'term_description', 'wp_kses_data' );
 

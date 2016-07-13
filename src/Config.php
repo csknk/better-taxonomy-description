@@ -5,7 +5,9 @@
  */
 namespace Carawebs\BetterTaxonomy;
 
-
+/**
+ * Output a data object that holds all plugin options
+ */
 class Config implements \ArrayAccess {
 
     const OPTION = CARAWEBS_BETTER_TAX_OPTION;

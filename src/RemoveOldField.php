@@ -133,6 +133,15 @@ class RemoveOldField {
 
   }
 
+  /**
+   * Restrict allowed HTML tags on term description
+   *
+   * @see https://codex.wordpress.org/Function_Reference/wp_kses
+   * @see https://core.trac.wordpress.org/browser/tags/4.5.3/src/wp-includes/kses.php#L0
+   * @uses wp_kses()
+   * @param  string $term_description Term description
+   * @return string                   Filtered content with only allowed HTML elements
+   */
   public function kill_scripts( $term_description ) {
 
     $allowed = [
@@ -144,7 +153,9 @@ class RemoveOldField {
       'p'           => [],
       'blockquote'  => [],
       'hr'          => [],
-
+      'h2'          => [],
+      'h3'          => [],
+      'h4'          => []
 
     ];
 

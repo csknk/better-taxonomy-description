@@ -19,7 +19,7 @@ class TaxonomyDescription {
    * @see http://wordpress.stackexchange.com/questions/689/adding-fields-to-the-category-tag-and-custom-taxonomy-edit-screen-in-the-wordpr
    * @see https://paulund.co.uk/add-tinymce-editor-category-description
    */
-   public function description( $tag ) {
+   public function description( $term ) {
 
      ?>
      <tr class="form-field">
@@ -28,8 +28,8 @@ class TaxonomyDescription {
          <?php
 
          $settings = [
-           'wpautop'       => FALSE,
-           'media_buttons' => true,
+           'wpautop'       => true,
+           'media_buttons' => false,
            'quicktags'     => true,
            'textarea_rows' => '15',
            'textarea_name' => 'description'
@@ -38,10 +38,11 @@ class TaxonomyDescription {
          // wp_editor( wpautop( stripslashes($content) ), $editor_id, $args );
 
          wp_editor(
-         html_entity_decode( $tag->description ),
-         'cat_description',
-         $settings
-       );
+           htmlspecialchars_decode( $term->description ),
+           //html_entity_decode( $tag->description ),
+           'cat_description',
+           $settings
+         );
 
        ?>
        <br />
@@ -51,12 +52,5 @@ class TaxonomyDescription {
    <?php
 
   }
-
-  // public function remove_html_filtering() {
-  //
-  //   remove_filter( 'pre_term_description', 'wp_filter_kses' );
-  //   remove_filter( 'term_description', 'wp_kses_data' );
-  //
-  // }
 
 }

@@ -70,8 +70,27 @@ class RemoveOldField {
    */
   public function remove_html_filtering() {
 
+    // The existing filters are too restrictive and must be removed
     remove_filter( 'pre_term_description', 'wp_filter_kses' );
     remove_filter( 'term_description', 'wp_kses_data' );
+
+    // Sanitize input
+    add_filter( 'pre_term_description', [ $this, 'kill_scripts' ] );
+
+    // Make sure the output is safe - limit the allowed HTML tags
+    add_filter( 'term_description', [ $this, 'kill_scripts' ] );
+
+    /* Apply `the_content` filters to term description */
+    if ( isset( $GLOBALS['wp_embed'] ) ) {
+      add_filter( 'term_description', array( $GLOBALS['wp_embed'], 'run_shortcode' ), 8 );
+      add_filter( 'term_description', array( $GLOBALS['wp_embed'], 'autoembed' ), 8 );
+    }
+    add_filter( 'term_description', 'wptexturize' );
+    add_filter( 'term_description', 'convert_smilies' );
+    add_filter( 'term_description', 'convert_chars' );
+    add_filter( 'term_description', 'wpautop' );
+    add_filter( 'term_description', 'shortcode_unautop' );
+    add_filter( 'term_description', 'do_shortcode', 11);
 
   }
 
@@ -111,6 +130,25 @@ class RemoveOldField {
       }
 
     }
+
+  }
+
+  public function kill_scripts( $term_description ) {
+
+    $allowed = [
+
+      'a'           => [ 'href' => [], 'title' => [] ],
+      'br'          => [],
+      'em'          => [],
+      'strong'      => [],
+      'p'           => [],
+      'blockquote'  => [],
+      'hr'          => [],
+
+
+    ];
+
+    return wp_kses( $term_description, $allowed );
 
   }
 

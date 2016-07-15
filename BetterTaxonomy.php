@@ -83,10 +83,12 @@ function setup() {
   add_action( 'admin_menu', [ $settings_page, 'cw_add_admin_menu' ] );
   add_action( 'admin_init', [ $settings_page, 'carawebs_better_tax_init' ] );
 
+  $taxonomies = $config['taxonomy'];
+  if( empty( $taxonomies ) ) { return; }
+
   $description = new Views\TaxonomyDescription();
 
   // Loop through the set taxonomies and connect up the hooks
-  $taxonomies = $config['taxonomy'];
   foreach( $taxonomies as $taxonomy ) {
 
     add_action( $taxonomy . '_edit_form_fields', [ $description, 'description' ] );
@@ -98,7 +100,7 @@ function setup() {
 
   $amend_fields = new RemoveOldField( $taxonomies );
   add_action( 'admin_head', [ $amend_fields, 'remove_default_category_description' ] );
-  add_action( 'admin_init', [ $amend_fields, 'remove_html_filtering' ] );
+  add_action( 'init', [ $amend_fields, 'remove_html_filtering' ] );
   //add_action( 'wp_head', [ $amend_fields, 'replace_html_filtering_for_output' ] );
 
 }

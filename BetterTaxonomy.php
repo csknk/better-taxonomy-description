@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Better Taxonomy
+Plugin Name: Carawebs Better Taxonomy
 Plugin URI: http://bitbucket.org/carawebs/better-taxonomy-description
 Description: Replace textarea description field with WYSIWYG on select taxonomies
 Version: 0.1
@@ -28,88 +28,48 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-/**
- * @author  David Egan <david@carawebs.com>
- * @license https://opensource.org/licenses/gpl-2.0.php
- */
-namespace Carawebs\BetterTaxonomy;
-//if ( ! is_admin() ) { return; }
+
+// File path to this plugin
+defined('CARAWEBS_BETTER_TAX_PATH') or define('CARAWEBS_BETTER_TAX_PATH', plugin_dir_path( __FILE__ ) );
+
+// Base URL of this plugin
+defined( 'CARAWEBS_BETTER_TAX_BASE_URL' ) or define( 'CARAWEBS_BETTER_TAX_BASE_URL', plugins_url( NULL, __FILE__ ) );
+
+// The plugin slug
+defined( 'CARAWEBS_BETTER_TAX_SLUG' ) or define( 'CARAWEBS_BETTER_TAX_SLUG', 'carawebs_better_tax' );
+
+// The name that will be used as a key for the plugin options array
+defined( 'CARAWEBS_BETTER_TAX_OPTION' ) or define( 'CARAWEBS_BETTER_TAX_OPTION', 'carawebs_better_tax' );
+
+// Proceed with load only if minimum PHP requirements are met
+if ( version_compare( PHP_VERSION, '5.4.0', '>=' ) ) {
+
+  require ( dirname( __FILE__ ) . '/load.php' );
+
+  return;
+
+}
 
 /**
- * Define constants for this plugin
- */
-define( 'CARAWEBS_BETTER_TAX_PATH', plugin_dir_path( __FILE__ ) );
-define( 'CARAWEBS_BETTER_TAX_BASE_URL', plugins_url( NULL, __FILE__ ) );
-define( 'CARAWEBS_BETTER_TAX_SLUG', 'carawebs_better_tax' );
-define( 'CARAWEBS_BETTER_TAX_OPTION', 'carawebs_better_tax' );
-
-/**
- * Load Composer autoload if available, otherwise register a simple autoload callback.
+ * Provide a notice if PHP version is incompatible and deactivate the plugin
  *
  * @return void
  */
-function autoload() {
+function carawebs_old_php_notice() {
 
-  static $done;
+  ob_start();
 
-  // Go ahead if $done == NULL or the class doesn't exist
-  if ( ! $done && ! class_exists( 'Carawebs\OrganisePosts\Plugin', true ) ) {
+  ?>
+  <div class="error fade">
+    <p><strong><?php echo __( 'Carawebs Better Taxonomy requires PHP 5.4 or later.', CARAWEBS_BETTER_TAX_SLUG ); ?></strong></p>
+		<p><?php echo __( ' Please upgrade your server to the latest version of PHP – you may need to contact your web host.', CARAWEBS_BETTER_TAX_SLUG ); ?></p>
+	</div>
+  <?php
 
-    $done = true;
+  echo ob_get_clean();
 
-    file_exists( __DIR__.'/vendor/autoload.php' )
-        ? require_once __DIR__.'/vendor/autoload.php'
-        : spl_autoload_register( function ( $class ) {
-
-            if (strpos($class, __NAMESPACE__) === 0) {
-
-                $name = str_replace('\\', '/', substr($class, strlen(__NAMESPACE__)));
-
-                require_once __DIR__."/src{$name}.php";
-
-            }
-
-        });
-
-  }
+	deactivate_plugins( plugin_basename( __FILE__ ) );
 
 }
 
-function setup() {
-
-  $config = new Config();
-  $settings_page = new Settings( $config );
-
-  add_action( 'admin_menu', [ $settings_page, 'cw_add_admin_menu' ] );
-  add_action( 'admin_init', [ $settings_page, 'carawebs_better_tax_init' ] );
-
-  $taxonomies = $config['taxonomy'];
-  if( empty( $taxonomies ) ) { return; }
-
-  $description = new Views\TaxonomyDescription();
-
-  // Loop through the set taxonomies and connect up the hooks
-  foreach( $taxonomies as $taxonomy ) {
-
-    add_action( $taxonomy . '_edit_form_fields', [ $description, 'description' ] );
-
-  }
-
-  //http://stackoverflow.com/questions/6285812/wordpress-apply-remove-filter-only-on-one-page
-  // @TODO: http://stackoverflow.com/a/36608926
-
-  $amend_fields = new RemoveOldField( $taxonomies );
-  add_action( 'admin_head', [ $amend_fields, 'remove_default_category_description' ] );
-  add_action( 'init', [ $amend_fields, 'remove_html_filtering' ] );
-  //add_action( 'wp_head', [ $amend_fields, 'replace_html_filtering_for_output' ] );
-
-}
-
-add_action( 'plugins_loaded', function () {
-
-    load_plugin_textdomain( 'better_taxonomy_description', false, dirname( plugin_basename(__FILE__) ) . '/lang' );
-
-});
-
-autoload();
-setup();
+add_action( 'admin_notices', 'carawebs_old_php_notice' );

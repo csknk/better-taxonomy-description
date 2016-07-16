@@ -11,13 +11,19 @@ namespace Carawebs\BetterTaxonomy;
 class RemoveOldField {
 
   /**
-   * An array of taxonomy screen IDs that should have the default description removed
+   * Taxonomy screen IDs that should have the default description removed
    * @var array
    */
   private $taxonomy_screens;
 
   /**
-   * @param array $taxonomies Array of taxonomy slugs for taxonomies that should have the default description removed
+   * Taxonomy slugs for taxonomies to amend
+   * @var array
+   */
+  private $taxonomies;
+
+  /**
+   * @param array $taxonomies Slugs for taxonomies to amend
    */
   public function __construct( $taxonomies ) {
 
@@ -155,7 +161,10 @@ class RemoveOldField {
       'hr'          => [],
       'h2'          => [],
       'h3'          => [],
-      'h4'          => []
+      'h4'          => [],
+      'ul'          => [],
+      'li'          => [],
+      'ol'          => []
 
     ];
 

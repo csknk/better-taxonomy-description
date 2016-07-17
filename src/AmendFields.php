@@ -8,7 +8,7 @@ namespace Carawebs\BetterTaxonomy;
 /**
  * Remove the existing description textarea on specific custom taxonomies
  */
-class RemoveOldField {
+class AmendFields {
 
   /**
    * Taxonomy screen IDs that should have the default description removed
@@ -70,44 +70,13 @@ class RemoveOldField {
   }
 
   /**
-   * Removes filtering of term meta description in the admin area
-   *
-   * @return void
-   */
-  public function remove_html_filtering() {
-
-    // The existing filters are too restrictive and must be removed
-    remove_filter( 'pre_term_description', 'wp_filter_kses' );
-    remove_filter( 'term_description', 'wp_kses_data' );
-
-    // Sanitize input
-    add_filter( 'pre_term_description', [ $this, 'kill_scripts' ] );
-
-    // Make sure the output is safe - limit the allowed HTML tags
-    add_filter( 'term_description', [ $this, 'kill_scripts' ] );
-
-    /* Apply `the_content` filters to term description */
-    if ( isset( $GLOBALS['wp_embed'] ) ) {
-      add_filter( 'term_description', array( $GLOBALS['wp_embed'], 'run_shortcode' ), 8 );
-      add_filter( 'term_description', array( $GLOBALS['wp_embed'], 'autoembed' ), 8 );
-    }
-    add_filter( 'term_description', 'wptexturize' );
-    add_filter( 'term_description', 'convert_smilies' );
-    add_filter( 'term_description', 'convert_chars' );
-    add_filter( 'term_description', 'wpautop' );
-    add_filter( 'term_description', 'shortcode_unautop' );
-    add_filter( 'term_description', 'do_shortcode', 11);
-
-  }
-
-  /**
    * Replace HTML filtering for output
    *
    * Reinstates the normal filters for term description on taxonomies that are not activated
    *
    * @return [type] [description]
    */
-  public function replace_html_filtering_for_output() {
+  public function conditionally_replace_html_filtering() {
 
     $all_taxonomies = array_values( get_taxonomies() );
 

@@ -25,16 +25,18 @@ add_action( 'plugins_loaded', function() {
     $config         = new Config();
     $settings_page  = new Settings( $config );
     $description    = new TaxonomyDescription();
-    $amend_fields   = new RemoveOldField( $config['taxonomy'] );
+    $amend_fields   = new AmendFields( $config['taxonomy'] );
 
     // Controller class is responsible for instantiating objects and attaching their methods to appropriate hooks.
-    $controller = new Controller( $config, $settings_page, $description, $amend_fields );
-
-    // Setup backend actions
+    $controller = new Controller(
+      $config,
+      $settings_page,
+      $description,
+      $amend_fields
+    );
     $controller->setupBackendActions();
-
-    // Setup frontend action
     $controller->setupFrontendActions();
+    $controller->conditionallyReplaceFilters();
 
     load_plugin_textdomain( 'better_taxonomy_description', false, dirname( plugin_basename(__FILE__) ) . '/lang' );
 

@@ -5,10 +5,6 @@
  */
 namespace Carawebs\BetterTaxonomy;
 
-
-// add_action( 'admin_menu', 'cw_add_admin_menu' );
-// add_action( 'admin_carawebs_better_tax', 'carawebs_better_tax_init' );
-
 /**
  * Class for plugin settings
  */
@@ -21,7 +17,7 @@ class Settings {
 
   }
 
-  function cw_add_admin_menu() {
+  function add_admin_menu() {
 
     add_options_page(
       'Better Taxonomy Description',  // Page title tag
@@ -34,7 +30,7 @@ class Settings {
   }
 
 
-  function carawebs_better_tax_init() {
+  function setup_settings() {
 
     register_setting(
     'cw_better_tax',

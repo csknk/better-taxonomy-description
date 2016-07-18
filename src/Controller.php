@@ -106,32 +106,38 @@ class Controller {
 
     if( empty( $filtered_taxonomies ) ) return;
 
-    add_action( 'init', function() use ( $filtered_taxonomies ) {
+    add_action( 'wp', function() use ( $filtered_taxonomies ) { // was 'init'
+
+      //error_log( json_encode($filtered_taxonomies));
 
       foreach( $filtered_taxonomies as $taxonomy ) {
 
         if( is_tax( $taxonomy ) ) {
 
-          add_filter( 'pre_term_description', 'wp_filter_kses' );
-          add_filter( 'term_description', 'wp_kses_data' );
+          $this->reinstateFilters();
 
         } elseif( 'post_tag' === $taxonomy && is_tag() ) {
 
           // The `is_tax()` conditional does not pick up 'post_tag'
-          add_filter( 'pre_term_description', 'wp_filter_kses' );
-          add_filter( 'term_description', 'wp_kses_data' );
+          $this->reinstateFilters();
 
         } elseif ( 'category' === $taxonomy && is_category() ) {
 
           // The `is_tax()` conditional does not pick up 'category'
-          add_filter( 'pre_term_description', 'wp_filter_kses' );
-          add_filter( 'term_description', 'wp_kses_data' );
+          $this->reinstateFilters();
 
         }
 
       }
 
     });
+
+  }
+
+  public function reinstateFilters() {
+
+    add_filter( 'pre_term_description', 'wp_filter_kses' );
+    add_filter( 'term_description', 'wp_kses_data', 9 );
 
   }
 

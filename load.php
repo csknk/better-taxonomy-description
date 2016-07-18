@@ -36,7 +36,8 @@ add_action( 'plugins_loaded', function() {
     );
     $controller->setupBackendActions();
     $controller->setupFrontendActions();
-    $controller->conditionallyReplaceFilters();
+    //$controller->conditionallyReplaceFilters();
+    add_action('init', [ $controller, 'conditionallyReplaceFilters' ], 99 );
 
     load_plugin_textdomain( 'better_taxonomy_description', false, dirname( plugin_basename(__FILE__) ) . '/lang' );
 

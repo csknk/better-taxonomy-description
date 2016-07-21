@@ -3,14 +3,13 @@
  * @author  David Egan <david@carawebs.com>
  * @license https://opensource.org/licenses/gpl-2.0.php
  *
- * This file starts the plugin
+ * Start the plugin
  */
 namespace Carawebs\BetterTaxonomy;
 
 require( dirname( __FILE__ ) . '/autoloader.php' );
 
-// Nothing more to do on AJAX requests
-//( defined( 'DOING_AJAX' ) && DOING_AJAX ) or
+// @TODO: Check to see if we can exit when doing AJAX - not sure!
 add_action( 'plugins_loaded', function() {
 
     autoload();
@@ -21,13 +20,12 @@ add_action( 'plugins_loaded', function() {
       return;
     }
 
-    // Config
     $config         = new Config();
     $settings_page  = new Settings( $config );
     $description    = new TaxonomyDescription();
     $amend_fields   = new AmendFields( $config['taxonomy'] );
 
-    // Controller class is responsible for instantiating objects and attaching their methods to appropriate hooks.
+    // Controller class instantiates objects and attaches their methods to appropriate hooks.
     $controller = new Controller(
       $config,
       $settings_page,
@@ -36,6 +34,8 @@ add_action( 'plugins_loaded', function() {
     );
     $controller->setupBackendActions();
     $controller->setupFrontendActions();
+
+    // @TODO: Move the init hook into controller class for neatness
     //$controller->conditionallyReplaceFilters();
     add_action('init', [ $controller, 'conditionallyReplaceFilters' ], 99 );
 

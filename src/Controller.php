@@ -10,14 +10,34 @@ namespace Carawebs\BetterTaxonomy;
  */
 class Controller {
 
+  /**
+   * Config settings
+   * @var object
+   */
   private $config;
 
+  /**
+   * Taxonomies to apply changes
+   * @var array
+   */
   private $taxonomies;
 
+  /**
+   * Settings object contains methods to setup settings page
+   * @var object
+   */
   private $settings;
 
+  /**
+   * Contains methods controlling new description
+   * @var object
+   */
   private $description;
 
+  /**
+   * Contains methods that amend the old fields
+   * @var object
+   */
   private $amend_fields;
 
   public function __construct( Config $config, Settings $settings, TaxonomyDescription $description, AmendFields $amend_fields ) {
@@ -62,8 +82,9 @@ class Controller {
   /**
    * Set up hooks & filters that run in the front end
    *
-   * Escaping whilst maintaining video oembed: https://tomjn.com/2015/05/07/escaping-the-unsecure/
+   * Escaping whilst maintaining video oembed
    *
+   * @see: https://tomjn.com/2015/05/07/escaping-the-unsecure/
    * @return void
    */
   public function setupFrontendActions() {
@@ -107,8 +128,6 @@ class Controller {
     if( empty( $filtered_taxonomies ) ) return;
 
     add_action( 'wp', function() use ( $filtered_taxonomies ) { // was 'init'
-
-      //error_log( json_encode($filtered_taxonomies));
 
       foreach( $filtered_taxonomies as $taxonomy ) {
 

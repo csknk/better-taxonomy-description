@@ -119,38 +119,24 @@ class Controller {
    * @return void
    */
   public function conditionallyReplaceFilters() {
-
+    if(empty($this->taxonomies)) return;
     $all_taxonomies = array_values( get_taxonomies() );
-
     // Filtered taxonomies: need to have the normal filters reinstated
-    $filtered_taxonomies = array_diff( $all_taxonomies, $this->taxonomies );
-
-    if( empty( $filtered_taxonomies ) ) return;
-
-    add_action( 'wp', function() use ( $filtered_taxonomies ) { // was 'init'
-
-      foreach( $filtered_taxonomies as $taxonomy ) {
-
-        if( is_tax( $taxonomy ) ) {
-
+    $filtered_taxonomies = array_diff($all_taxonomies, $this->taxonomies);
+    if(empty($filtered_taxonomies)) return;
+    add_action('wp', function() use ($filtered_taxonomies) {
+      foreach ($filtered_taxonomies as $taxonomy) {
+        if (is_tax( $taxonomy)) {
           $this->reinstateFilters();
-
-        } elseif( 'post_tag' === $taxonomy && is_tag() ) {
-
+        } elseif('post_tag' === $taxonomy && is_tag()) {
           // The `is_tax()` conditional does not pick up 'post_tag'
           $this->reinstateFilters();
-
-        } elseif ( 'category' === $taxonomy && is_category() ) {
-
+        } elseif ('category' === $taxonomy && is_category()) {
           // The `is_tax()` conditional does not pick up 'category'
           $this->reinstateFilters();
-
         }
-
       }
-
     });
-
   }
 
   public function reinstateFilters() {

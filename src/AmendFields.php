@@ -26,11 +26,8 @@ class AmendFields {
    * @param array $taxonomies Slugs for taxonomies to amend
    */
   public function __construct( $taxonomies ) {
-
     $this->taxonomies = $taxonomies;
-
     $this->set_taxonomy_screens( $taxonomies );
-
   }
 
   /**
@@ -39,14 +36,14 @@ class AmendFields {
    * @param array $taxonomies
    */
   private function set_taxonomy_screens( $taxonomies ) {
-
+    if (!is_array($taxonomies)) {
+        return;
+        //$this->taxonomy_screens = [];
+    }
     // Process the array of taxonomy slugs to get an array of screen IDs
     $this->taxonomy_screens = array_map( function( $value ) {
-
       return 'edit-' . $value;
-
     }, $taxonomies );
-
   }
 
   /**
